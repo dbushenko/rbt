@@ -29,13 +29,13 @@ Run the 'rbt' tool as a normal jar inside the project directory where your 'reqs
 
 1. Header IDs in square brackets:
 
-   ## [MY-ID] My requirement header
+        ## [MY-ID] My requirement header
 
 In this case the ID of the requirement will by 'MY-ID'.
 
 2. Complex format:
 
-	#id:{01|Button title}
+	    #id:{01|Button title}
 
 This is a local ID definition to be used in lists or tables. If defined within the requiement with ID like previous one, the resulting ID will be 'MY-ID/01'.
 
