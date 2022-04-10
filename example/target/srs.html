@@ -1,0 +1,108 @@
+<h1 id="use-cases">Use cases</h1>
+<h2 id="UCS-01">[UCS-01] User signs in</h2>
+<p><em>User:</em> not authenticated user.</p>
+<p><em>Preconditions:</em></p>
+<ul>
+<li>user not authenticated;</li>
+<li>Form <a href="#UI-01">UI-01: Sign in form</a> is shown.</li>
+</ul>
+<p><em>Postconditions:</em></p>
+<ul>
+<li>User is authenticated;</li>
+<li>Form <a href="#UI-02">UI-02: Home page</a> is shown.</li>
+</ul>
+<p><em>Main flow:</em></p>
+<ol type="1">
+<li>The user specifies his credentials and signs into the system using <a href="#UI-01">UI-01/A01: Login</a>.</li>
+<li>The system checks user credentials.</li>
+<li>The system authenticates the user.</li>
+<li>The system shows the form <a href="#UI-02">UI-02: Home page</a> and shows the message <a href="#M-01">Successfull authentication</a>.</li>
+</ol>
+<p><em>Alternative flows:</em></p>
+<p>2a. <em>If</em> credentials are wrong <em>then</em> the system stops the use case and shows the message <a href="#M-02">Wrong credentials</a>.</p>
+<h3 id="references-from-use-case">References from use case</h3>
+<p><a href="#M-02">M-02</a>, <a href="#M-01">M-01</a>, <a href="#UI-02">UI-02</a>, <a href="#UI-01">UI-01</a>.</p>
+<h1 id="user-interfaces">User interfaces</h1>
+<h2 id="UI-01">[UI-01] Sign in form</h2>
+<table>
+<thead>
+<tr class="header">
+<th>ID/Caption</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A01</td>
+<td>Action</td>
+<td>Authenticates user</td>
+</tr>
+<tr class="even">
+<td>Login</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>A02</td>
+<td>Action</td>
+<td>Cancels the use case</td>
+</tr>
+<tr class="odd">
+<td>Cancel</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Email</td>
+<td>Email</td>
+<td>User identity.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td><em>Default value:</em> last specified email.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td><em>Mandatory</em>.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Password</td>
+<td>Password</td>
+<td>User password.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td><em>Mandatory</em>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="references-to-form">References to form</h3>
+<p><a href="#UCS-01">UCS-01</a>.</p>
+<h2 id="UI-02">[UI-02] Home page</h2>
+<p>The home page of the application as it will be described further.</p>
+<h3 id="references-to-form-1">References to form</h3>
+<p><a href="#UCS-01">UCS-01</a>.</p>
+<h1 id="messages">Messages</h1>
+<h2 id="M-01">[M-01] Successfull authentication</h2>
+<p>En-us: User authenticated successfully</p>
+<h2 id="M-02">[M-02] Wrong credentials</h2>
+<p>En-us: Wrong credentials</p>

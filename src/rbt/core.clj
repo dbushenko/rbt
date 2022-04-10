@@ -12,6 +12,7 @@
         md-files (doall (map reader/read-md-file files-list))
         result (processor/process-md-files md-files)]
     (if (:errors result)
-      (do (println (:errors result))
-          (System/exit -1))
+      (do 
+        (dorun (map println (:errors result)))
+        (System/exit -1))
       (spit document (:result result)))))

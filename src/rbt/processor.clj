@@ -4,11 +4,11 @@
   (:gen-class))
 
 (def ^:dynamic *LEVEL-PATTERN* (re-pattern "^#+"))
-(def ^:dynamic *REF* (re-pattern "(#ref)\\:([a-zA-Z0-9-_\\.\\/]+)"))
-(def ^:dynamic *REF-ID* (re-pattern "(#refId)\\:([a-zA-Z0-9-_\\.\\/]+)"))
-(def ^:dynamic *REF-TEXT* (re-pattern "(#refText)\\:([a-zA-Z0-9-_\\.\\/]+)"))
-(def ^:dynamic *REFS-TO* (re-pattern "(#refsTo)\\:([a-zA-Z0-9-_\\.\\/]+)"))
-(def ^:dynamic *REFS-FROM* (re-pattern "(#refsFrom)\\:([a-zA-Z0-9-_\\.\\/]+)"))
+(def ^:dynamic *REF* (re-pattern "(#ref)\\:([a-zA-Z0-9-_\\/]+)"))
+(def ^:dynamic *REF-ID* (re-pattern "(#refId)\\:([a-zA-Z0-9-_\\/]+)"))
+(def ^:dynamic *REF-TEXT* (re-pattern "(#refText)\\:([a-zA-Z0-9-_\\/]+)"))
+(def ^:dynamic *REFS-TO* (re-pattern "(#refsTo)\\:([a-zA-Z0-9-_\\/]+)"))
+(def ^:dynamic *REFS-FROM* (re-pattern "(#refsFrom)\\:([a-zA-Z0-9-_\\/]+)"))
 
 ;; Supported types of references
 ;;
@@ -63,8 +63,8 @@
 
 (defn check-ref [r line-num file-name rs]
   (if-not (contains? rs r)
-    {:line-num line-num
-     :file-name file-name
+    {:file-name file-name
+     :line-num line-num
      :reference r}))
 
 ;; Check that each reference leads to existing requirement

@@ -11,7 +11,7 @@
 ;;
 ;; 2) Complex format:
 ;;
-;;   #id:{01|Button title}
+;;   #id:{01:Button title}
 ;;
 ;; Example of output:
 ;;
@@ -31,8 +31,8 @@
 ;; In case of complex ID it should lead to the parent ID.
 
 
-(def ^:dynamic *HEAD-ID* (re-pattern "^#+\\s+\\[([a-zA-Z0-9-_\\.]+)\\].+"))
-(def ^:dynamic *MIDDLE-ID* (re-pattern "#id\\:\\{([a-zA-Z0-9-_\\.]+)\\|?([\\p{Alnum}\\p{Blank}-_\\.]*)\\}"))
+(def ^:dynamic *HEAD-ID* (re-pattern "^#+\\s+\\[([a-zA-Z0-9-_]+)\\].+"))
+(def ^:dynamic *MIDDLE-ID* (re-pattern "#id\\:\\{([a-zA-Z0-9-_]+)\\:?([\\p{Alnum}\\p{Blank}-_]*)\\}"))
 
 (defn extract-head-id [line]
   (second (re-find *HEAD-ID* line)))

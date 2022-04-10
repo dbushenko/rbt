@@ -35,7 +35,7 @@ In this case the ID of the requirement will by 'MY-ID'.
 
 2. Complex format:
 
-	    #id:{01|Button title}
+	    #id:{01:Button title}
 
 This is a local ID definition to be used in lists or tables. If defined within the requiement with ID like previous one, the resulting ID will be 'MY-ID/01'.
 
@@ -57,7 +57,17 @@ Example: #ref:MY-ID will be transformed to [MY-ID: My requirement header](#MY-ID
 4. #refsTo:ID -- lists all references to this requirement.
 
 5. #refsFrom:ID -- lists all references from this requirement.
-	
+
+## Example
+
+The directory 'example' contains small example with the source requirements defined in directory 'example/src/' and corresponding project file 'example/reqs.edn'.
+
+The script 'example/run.sh' shows how the user may build the software requirements document and convert it to different formats. Bear in mind that it uses pandoc utility which should be installed. And pandoc itself uses latex to convert to pdf, so latex also needed for that.
+
+Converting to docx format is not accurate, after converting the user must fix some styles for tables.
+
+Examples of the software requirements document in different formats are in the 'examples/target' directory.
+
 ## License
 
 Copyright © 2022 Dmitry Bushenko (d.bushenko@gmail.com)

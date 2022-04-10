@@ -1,0 +1,4 @@
+{:src "src"
+ :document "target/srs.md"
+ :files ["ucs.md", "ui.md", "messages.md"]
+}
