@@ -27,3 +27,6 @@
 ### References from use case
 #refsFrom:UCS-01.
 
+## [UCS-02] User signs up
+TBD.
+The use case will be based on #ref:UI-01 and should be done prior #ref:UCS-01.

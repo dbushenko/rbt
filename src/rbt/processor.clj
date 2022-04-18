@@ -307,4 +307,7 @@
     (let [trace-to (make-trace-map-to traces-from)
           processed (map #(process-file % ids-map trace-to traces-from) md-files)]
       {:result (reduce #(str %1 "\n\n" %2) processed)
+       :ids-map ids-map
+       :traces-from traces-from
+       :traces-to trace-to
        :errors nil}))))

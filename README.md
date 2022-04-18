@@ -7,6 +7,7 @@ Features:
 1. Checks definied IDs uniqueness.
 2. Checks that referenced ID exists.
 3. Allows referencing to the requirement's header by its ID.
+4. Allows building the dependency tree.
 
 ## Usage
 
@@ -24,6 +25,17 @@ You need a 'reqs.edn' file inside your project directory. Example:
 Run the 'rbt' tool as a normal jar inside the project directory where your 'reqs.edn' file exists.
 
 	$ java -jar rbt-0.1.0-SNAPSHOT-standalone.jar 
+
+Supported commands:
+
+	no command -- build the project
+	-d REQ_IDS -- show the requirements which depend on the specified IDs (separated by comma)
+	-h -- show help
+
+Supported options:
+
+	-p PROJECT_FILE -- specify this option if you need project file name other than 'reqs.edn'.
+
 
 ### Supported types of defined IDs
 
@@ -57,6 +69,10 @@ Example: #ref:MY-ID will be transformed to [MY-ID: My requirement header](#MY-ID
 4. #refsTo:ID -- lists all references to this requirement.
 
 5. #refsFrom:ID -- lists all references from this requirement.
+
+### Dependency tree
+
+
 
 ## Example
 

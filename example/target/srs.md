@@ -27,6 +27,10 @@
 ### References from use case
 [M-02](#M-02), [M-01](#M-01), [UI-02](#UI-02), [UI-01](#UI-01).
 
+## [UCS-02] User signs up {#UCS-02}
+TBD.
+The use case will be based on [UI-01: Sign in form](#UI-01) and should be done prior [UCS-01: User signs in](#UCS-01).
+
 # User interfaces
 
 ## [UI-01] Sign in form {#UI-01}
@@ -47,7 +51,7 @@
 |                  |          | *Mandatory*.                           |
 
 ### References to form
-[UCS-01](#UCS-01).
+[UCS-02](#UCS-02), [UCS-01](#UCS-01).
 
 
 ## [UI-02] Home page {#UI-02}
