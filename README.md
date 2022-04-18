@@ -72,6 +72,23 @@ Example: #ref:MY-ID will be transformed to [MY-ID: My requirement header](#MY-ID
 
 ### Dependency tree
 
+You may check the dependency tree of an individual (or list of comma-separated) requirement like this:
+
+	java -jar ../target/rbt-0.1.0-SNAPSHOT-standalone.jar -d UI-01
+
+The result will be:
+
+	Requirement UI-01
+	~~~~~~~~~~~~~~~~~~~~
+	Dependency tree:
+	
+	UI-01
+	├─UCS-02
+	└─UCS-01
+		└─UCS-02
+	
+	Dependent requirements list:
+	UCS-01 UCS-02
 
 
 ## Example
