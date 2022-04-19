@@ -85,7 +85,7 @@ The result will be:
 	UI-01
 	├─UCS-02
 	└─UCS-01
-		└─UCS-02
+	  └─UCS-02
 	
 	Dependent requirements list:
 	UCS-01 UCS-02
