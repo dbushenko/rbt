@@ -17,11 +17,17 @@
   (println "The 'rbt' usage options:")
   (println summary))
 
+(defn get-base-dir [project-file]
+  (let [nm (.getName project-file)
+        ap (.getAbsolutePath project-file)
+        p (.substring ap 0 (- (.length ap) (.length nm)))]
+    p))
 
 (defn process-project [project-file-name]
   (let [project-file (-> project-file-name slurp read-string)
-        src-dir (or (:src project-file) "src")
-        document (or (:document project-file) "document.md")
+        base-dir (get-base-dir (java.io.File. project-file-name))
+        src-dir (str base-dir (or (:src project-file) "src"))
+        document (str base-dir (or (:document project-file) "document.md"))
         files-list (map #(str src-dir java.io.File/separator %) (:files project-file))
         md-files (doall (map reader/read-md-file files-list))
         result (processor/process-md-files md-files)]
@@ -29,8 +35,15 @@
       (do 
         (dorun (map println (:errors result)))
         (System/exit -1))
-      {:result result
-       :document document})))
+
+      (let [document-dir-path (get-base-dir (java.io.File. document))
+            document-dir (java.io.File. document-dir-path)]
+
+        (if-not (.exists document-dir)
+          (.mkdirs document-dir))
+        
+        {:result result
+         :document document}))))
 
 ;;;;;;  
 
