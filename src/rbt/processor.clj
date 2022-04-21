@@ -273,8 +273,7 @@
       (process-ref-id ids-map)
       (process-ref-text ids-map)
       (process-refs-to ids-map traces-to)
-      (process-refs-from ids-map traces-from)
-      ))
+      (process-refs-from ids-map traces-from) ))
 
 (defn process-file
   ([file ids-map traces-to traces-from]
@@ -292,7 +291,7 @@
 
 
 ;;;;;;;;;
-;; API
+;; Process API
 
 (defn process-md-files [md-files]
   (let [ids-set (verify-id-uniqueness md-files)
@@ -311,3 +310,4 @@
        :traces-from traces-from
        :traces-to trace-to
        :errors nil}))))
+

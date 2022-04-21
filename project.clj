@@ -5,7 +5,8 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.0"]
                  [org.clojure/tools.cli "1.0.206"]
-                 [hu.webarticum/tree-printer "2.0.0"]]
+                 [hu.webarticum/tree-printer "2.0.0"]
+                 [org.bitbucket.cowwoc/diff-match-patch "1.2"]]
   :repl-options {:init-ns rbt.core}
   :aot :all
   :main rbt.core)

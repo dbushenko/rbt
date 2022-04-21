@@ -91,6 +91,24 @@ The result will be:
 	UCS-01 UCS-02
 
 
+### Compare specifications
+
+If you need to see the difference betwee the two specification, specify them with options '-p' and '-c':
+
+	java -jar ../target/rbt-0.1.0-SNAPSHOT-standalone.jar -p example1/reqs.edn -c example2/reqs.edn
+
+Comparison will give you the something like this:
+
+	Removed requirements:
+	[]
+
+	Added requirements:
+	[UI-03]
+
+	Different requirements:
+	[UCS-02]
+
+
 ## Example
 
 The directory 'example' contains small example with the source requirements defined in directory 'example/src/' and corresponding project file 'example/reqs.edn'.
