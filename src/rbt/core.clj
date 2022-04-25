@@ -34,9 +34,9 @@
         files-list (map #(str src-dir java.io.File/separator %) (:files project-file))
         md-files (doall (map reader/read-md-file files-list))
         result (processor/process-md-files md-files)]
-    (if (:errors result)
+    (if (:processor/errors result)
       (do 
-        (dorun (map println (:errors result)))
+        (dorun (map println (:processor/errors result)))
         (System/exit -1))
 
       (let [document-dir-path (get-base-dir (java.io.File. document))
@@ -53,8 +53,9 @@
 (defn build-project [project-file-name]
   (let [processed (process-project project-file-name)
         result (:result processed)
-        document (:document processed)]
-    (spit document (:result result))))
+        document (:document processed)
+        txt (-> result :processor/result)]
+    (spit document txt)))
 
 ;;;;;;
 
@@ -84,7 +85,7 @@
 (defn build-dependent-tree [project-file-name requirements]
   (let [processed (process-project project-file-name)
         result (:result processed)
-        traces-to (:traces-to result)]
+        traces-to (:processor/traces-to result)]
     (dorun
      (map (fn [req]
             (let [node (tp/make-node req)

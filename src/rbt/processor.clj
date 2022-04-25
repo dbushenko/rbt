@@ -1,6 +1,9 @@
 (ns rbt.processor
   (:require [rbt.reader :as reader]
-            [clojure.string :as s])
+            [clojure.string :as str]
+            [clojure.spec.alpha :as s]
+            [orchestra.spec.test :as st]
+            [expound.alpha :as expound])
   (:gen-class))
 
 (def ^:dynamic *LEVEL-PATTERN* (re-pattern "^#+"))
@@ -19,13 +22,13 @@
 ;; #refsFrom:ID -- all references from this requirement
 
 (defn add-ids-to-unique-set [fl acc-start]
-  (loop [ids (next (-> fl :ids))
-         id (first (-> fl :ids))
+  (loop [ids (next (-> fl :reader/ids))
+         id (first (-> fl :reader/ids))
          acc acc-start]
     (if (empty? id)
       acc
       (if (contains? acc id)
-        (throw (IllegalStateException. (str "ID '" id "' mentioned in " (:name fl) " already defined!")))
+        (throw (IllegalStateException. (str "ID '" id "' mentioned in " (:reader/name fl) " already defined!")))
         (recur (next ids) (second ids) (conj acc id))))))
 
 (defn verify-id-uniqueness
@@ -40,12 +43,12 @@
 ;;-------------
 
 (defn add-ids-to-map [fl acc-start]
-  (loop [ids (:ids fl)
+  (loop [ids (:reader/ids fl)
          id (first ids)
          acc acc-start]
     (if (nil? id)
       acc
-      (recur (next ids) (second ids) (assoc acc (:id id) id)))))
+      (recur (next ids) (second ids) (assoc acc (:reader/id id) id)))))
 
 (defn make-ids-map
   ([md-files] (make-ids-map md-files {}))
@@ -103,7 +106,7 @@
       (assoc acc hid (into #{} (concat old-refs refs))))))
 
 (defn make-traces-from
-  ([file ids-map acc] (make-traces-from (s/split-lines (:markdown file)) 1 nil 0 ids-map file {} [] acc))
+  ([file ids-map acc] (make-traces-from (str/split-lines (:reader/markdown file)) 1 nil 0 ids-map file {} [] acc))
   ([lines line-num current-id current-level ids-map file traces-from-acc errors-acc acc]
    (let [line (first lines)]
      (if (nil? line)
@@ -112,7 +115,7 @@
        (let [[hid hlevel] (extract-header line)
              next-id (or hid current-id)
              refs (extract-refs line)
-             errors (validate-refs refs line-num (:name file) ids-map)]
+             errors (validate-refs refs line-num (:reader/name file) ids-map)]
          (recur (next lines)
                 (inc line-num)
                 (or hid current-id)
@@ -164,7 +167,7 @@
   (filter (fn [e] (not (nil? e)))
           (map #(let [v (get ids-map %)]
                   (if-not (nil? v)
-                    (:ref-to v)))
+                    (:reader/ref-to v)))
                traces-set))))
 
 ;;-------------
@@ -176,7 +179,7 @@
       line)))
 
 (defn process-local-id-def [line]
-  (s/replace line reader/*MIDDLE-ID* "$1"))
+  (str/replace line reader/*MIDDLE-ID* "$1"))
 
 (defn process-ref
   ([line ids-map]
@@ -187,9 +190,9 @@
    (if (nil? result)
      line
      (let [id-key (last result)
-           id-ref (:ref-to (get ids-map id-key))
-           id-text (:text (get ids-map id-key))
-           line2 (s/replace line (first result) (str "[" id-key ": " id-text "](#" id-ref ")"))
+           id-ref (:reader/ref-to (get ids-map id-key))
+           id-text (:reader/text (get ids-map id-key))
+           line2 (str/replace line (first result) (str "[" id-key ": " id-text "](#" id-ref ")"))
            matcher2 (re-matcher *REF* line2)]
        (recur (re-find matcher)
               matcher2
@@ -205,8 +208,8 @@
    (if (nil? result)
      line
      (let [id-key (last result)
-           id-ref (:ref-to (get ids-map id-key))
-           line2 (s/replace line (first result) (str "[" id-key "](#" id-ref ")"))
+           id-ref (:reader/ref-to (get ids-map id-key))
+           line2 (str/replace line (first result) (str "[" id-key "](#" id-ref ")"))
            matcher2 (re-matcher *REF-ID* line2)]
        (recur (re-find matcher)
               matcher2
@@ -223,9 +226,9 @@
    (if (nil? result)
      line
      (let [id-key (last result)
-           id-ref (:ref-to (get ids-map id-key))
-           id-text (:text (get ids-map id-key))
-           line2 (s/replace line (first result) (str "[" id-text "](#" id-ref ")"))
+           id-ref (:reader/ref-to (get ids-map id-key))
+           id-text (:reader/text (get ids-map id-key))
+           line2 (str/replace line (first result) (str "[" id-text "](#" id-ref ")"))
            matcher2 (re-matcher *REF-TEXT* line2)]
        (recur (re-find matcher)
               matcher2
@@ -238,11 +241,11 @@
       line
       (let [lexema (first found)
             id-full (last found)
-            hid (:ref-to (get ids-map id-full))
+            hid (:reader/ref-to (get ids-map id-full))
             traces (get traces-to hid)
             res (reduce #(str %1 "[" %2 "](#" %2 "), ") "" traces)
             res2 (if (> (count res) 2) (subs res 0 (- (count res) 2)) res)]
-        (recur (s/replace line lexema res2)
+        (recur (str/replace line lexema res2)
                ids-map
                traces-to)))))
 
@@ -252,11 +255,11 @@
       line
       (let [lexema (first found)
             id-full (last found)
-            hid (:ref-to (get ids-map id-full))
+            hid (:reader/ref-to (get ids-map id-full))
             traces (get traces-from hid)
             res (reduce #(str %1 "[" %2 "](#" %2 "), ") "" traces)
             res2 (if (> (count res) 2) (subs res 0 (- (count res) 2)) res)]
-        (recur (s/replace line lexema res2)
+        (recur (str/replace line lexema res2)
                ids-map
                traces-from)))))
 
@@ -277,7 +280,7 @@
 
 (defn process-file
   ([file ids-map traces-to traces-from]
-   (let [lines (s/split-lines (:markdown file))]
+   (let [lines (str/split-lines (:reader/markdown file))]
      (process-file (first lines) (next lines) ids-map traces-to traces-from [])))
   ([line lines ids-map traces-to traces-from acc]
    (if (nil? line)
@@ -293,6 +296,10 @@
 ;;;;;;;;;
 ;; Process API
 
+(s/fdef process-md-files
+  :args (s/cat :md-files (s/coll-of :reader/file-result))
+  :ret :processor/process-result)
+
 (defn process-md-files [md-files]
   (let [ids-set (verify-id-uniqueness md-files)
         ids-map (make-ids-map md-files)
@@ -300,14 +307,17 @@
         traces-from (update-vals (:traces-from tracing-result) #(clean-traces-from % ids-map))]
 
     (if-not (empty? (:errors tracing-result))
-      {:result nil
-       :errors (:errors tracing-result)}
+      {:processor/result nil
+       :processor/errors (:errors tracing-result)}
 
     (let [trace-to (make-trace-map-to traces-from)
           processed (map #(process-file % ids-map trace-to traces-from) md-files)]
-      {:result (reduce #(str %1 "\n\n" %2) processed)
-       :ids-map ids-map
-       :traces-from traces-from
-       :traces-to trace-to
-       :errors nil}))))
+      {:processor/result (reduce #(str %1 "\n\n" %2) processed)
+       :processor/ids-map ids-map
+       :processor/traces-from traces-from
+       :processor/traces-to trace-to
+       :processor/errors nil}))))
 
+
+(st/instrument)
+(set! s/*explain-out* expound/printer)
